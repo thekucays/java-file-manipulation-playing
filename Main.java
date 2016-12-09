@@ -135,27 +135,47 @@ public class Main{
 			listObatSize = listObat.size();
 			dataObat.close();
 
+			// jumlah obat yang ingin dibeli
+			System.out.println("Masukkan jumlah jenis obat yang mau dibeli:");
+			int jumlahDibeli = scanner.nextInt();
+			scanner.nextLine();
+		
+		
 			// ambil data yang mau dibeli, cek qty nya
-			System.out.println("Masukkan nomor obat yang akan di beli: ");
-			int pilihan = scanner.nextInt();
-			scanner.nextLine();
-			String obat = String.valueOf(listObat.get(pilihan -1));
-			String[] obats = obat.split(",");
+			// loop berdasarkan jumlahDibeli
+			String[] obat = new String[jumlahDibeli];
+			int[] qty = new int[jumlahDibeli];
+			int[] qtyBeli = new int[jumlahDibeli];
+			for(int dibeli=0; dibeli<jumlahDibeli; dibeli++){
+				System.out.println("Masukkan nomor obat yang akan di beli: ");
+				int pilihan = scanner.nextInt();
+				scanner.nextLine();
+				obat[dibeli] = String.valueOf(listObat.get(pilihan -1));
+				String[] obats = obat[dibeli].split(",");
 
-			int qty =  Integer.parseInt(obats[1]);
-			System.out.println("Masukkan jumlah obat yang ingin dibeli : ");
-			int qtyBeli = scanner.nextInt();
-			scanner.nextLine();
-			if(qtyBeli > qty){
-				System.out.println("Qty pembelian melebihi batas stok. Aborting. \n \n");
-				return;
-			} else{
-				qty -= qtyBeli;
+				//int qty =  Integer.parseInt(obats[1]);
+				qty[dibeli] =  Integer.parseInt(obats[1]);
+				System.out.println("Masukkan jumlah obat yang ingin dibeli : ");
+				//int qtyBeli = scanner.nextInt();
+				qtyBeli[dibeli] = scanner.nextInt();
+				scanner.nextLine();
+				if(qtyBeli[dibeli] > qty[dibeli]){
+					System.out.println("Qty pembelian melebihi batas stok. Aborting. \n \n");
+					return;
+				} else{
+					qty[dibeli] -= qtyBeli[dibeli];
+				}
 			}
 
 			// replace line data lama nya dengan data baru
-			String oldData = obat;
-			String newData = obats[0] + "," + qty + "," + obats[2];
+			// loop berdasarkan jumlahDibeli
+			//String[jumlahDibeli] oldData = obat;
+			//String[jumlahDibeli] newData = obats[0] + "," + qty + "," + obats[2];
+			String[] oldData = obat;
+			String[] newData = new String[jumlahDibeli];
+			for(int x=0; x<jumlahDibeli; x++){
+				newData[x] = oldData[x].split(",")[0] + "," + qty[x] + "," + oldData[x].split(",")[2];
+			}
 			File fileObat = new File(namaFileObat);
 			FileReader fr = new FileReader(fileObat);
 			try{
@@ -171,8 +191,11 @@ public class Main{
 					*/
 					totalStr += "\n";
 				}
-				totalStr = totalStr.replaceAll(oldData, newData);
-
+				// loop data berdasar jumlahDibeli
+				// untuk replace semua data yang dibeli pada txt inventory
+				for(int ganti=0; ganti<jumlahDibeli; ganti++){
+					totalStr = totalStr.replaceAll(oldData[ganti], newData[ganti]);
+				}
 				FileWriter fw = new FileWriter(fileObat);
 				fw.write(totalStr);
 				fw.close();
@@ -182,12 +205,13 @@ public class Main{
 			System.out.println("Stok inventory berhasil diupdate");
 
 			// namacustomer, namaobat, qty, total
-			String transactionString = namaCustomer + "," + obats[0] + "," + qty + "," + Integer.parseInt(obats[2])*qty; 
-
+			//String transactionString = namaCustomer + "," + obats[0] + "," + qty + "," + Integer.parseInt(obats[2])*qty; 
 			// masukin data pembelian ke transactions.txt
 			FileWriter writer = new FileWriter(new File(namaFileTransaksi), true);
-			writer.write(transactionString);
-			writer.write("\n");
+			for(int tsa=0; tsa<jumlahDibeli; tsa++){
+				writer.write(namaCustomer + "," + newData[tsa].split(",")[0] + "," + qtyBeli[tsa] + "," + Integer.parseInt(newData[tsa].split(",")[2]) * qtyBeli[tsa]);
+				writer.write("\n");
+			}
 			writer.close();
 			System.out.println("Data transaksi berhasil dimasukkan");
 
@@ -281,6 +305,7 @@ public class Main{
 				ga perlu close Scanner yang System.in di method manapun karena akan berlaku ke semua
 				http://stackoverflow.com/questions/13042008/java-util-nosuchelementexception-scanner-reading-user-input
 			*/
+			System.out.println("hae");
 			Scanner scanner = new Scanner(System.in);
 			tampilMenu();
 			pilihan = scanner.nextInt();
@@ -307,9 +332,12 @@ public class Main{
 					break;
 				default:
 					System.out.println("Menu tidak tersedia.. silahkan periksa kembali pilihan Anda. \n");
+					tampilMenu();
+					//pilihan = scanner.nextInt();
 					break;
 			}
-		} while (pilihan <= 6);
+		//} while (pilihan <= 6);
+		} while(true);
 	}
 	
 }

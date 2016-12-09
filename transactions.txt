@@ -1,3 +1,3 @@
 nama pelanggan, nama obat, qty, total
-luki,panadol,7,70000
-default,combantrin,5,49500
+default,panadol,2,20000
+default,ctm,3,4500
