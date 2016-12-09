@@ -305,7 +305,6 @@ public class Main{
 				ga perlu close Scanner yang System.in di method manapun karena akan berlaku ke semua
 				http://stackoverflow.com/questions/13042008/java-util-nosuchelementexception-scanner-reading-user-input
 			*/
-			System.out.println("hae");
 			Scanner scanner = new Scanner(System.in);
 			tampilMenu();
 			pilihan = scanner.nextInt();
