@@ -1,6 +1,8 @@
 nama_barang,qty,harga 
-panadol,8,10000
-ctm,7,1500
+panadol,7,10000
+ctm,10,1500
 rhinbos,10,100000
-combantrin,10,9900
+combantrin,9,9900
 tes error a,10,100
+tes modul,2,1000
+tes aja,2,11
