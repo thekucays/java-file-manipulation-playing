@@ -132,6 +132,7 @@ public class Inventory{
 	
 	public void inquiryDataObat(){
 		try{
+			System.out.println("calling inquiryDataObat() from Inventory class");
 			Scanner dataObat = new Scanner(new File(getInventoryFile()));
 			dataObat.nextLine();
 			System.out.println("Berikut list data obat yang tersedia");

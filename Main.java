@@ -47,8 +47,10 @@ public class Main{
 					transactions.pembelian();
 					break;
 				case 4:
-					inventory.setInventoryFile("inventory.txt");
-					inventory.inquiryDataObat();
+					// using polymorphism
+					Inventory poly = new InventoryExtended();
+					poly.setInventoryFile("inventory.txt");
+					poly.inquiryDataObat();
 					break;
 				case 5:
 					transactions.setTransactionsFile("transactions.txt");
